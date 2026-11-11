@@ -3,105 +3,58 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Mission TEC — Test du lit gauche V0.8</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mission TEC — Test V0.9</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#081827;color:white;font:16px system-ui,sans-serif}
-.wrap{max-width:1300px;margin:auto;padding:12px}
-header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
-button{border:0;border-radius:9px;background:#2c9d86;color:white;padding:12px 16px;font-weight:700;cursor:pointer;font-size:15px}
-button.secondary{background:#284563}
-.scene{position:relative;width:100%;aspect-ratio:1671/941;overflow:hidden;border:2px solid #55728b;border-radius:12px;background:#222;touch-action:manipulation}
-.scene img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none;user-select:none}
-.pillow{clip-path:polygon(5.5% 61%,8% 58%,12% 56%,18% 54%,24% 56%,29.5% 61%,31% 65%,28% 68%,22% 70%,14% 71%,7% 69%)}
-.mess{clip-path:polygon(0% 68%,7% 66%,10% 65%,17% 65%,23% 66%,29% 70%,32% 75%,31% 100%,0% 100%)}
-.hit{position:absolute;left:0;top:64%;width:34%;height:36%;background:transparent;padding:0;cursor:pointer}
-.hit:focus-visible{outline:4px solid yellow;outline-offset:-4px}
-.panel{background:#142c40;border-radius:10px;padding:14px;margin-top:12px}
-.panel p{margin:8px 0}
-.state{font-weight:800;color:#9ce4cd}
-.small{font-size:13px;color:#bfd0db}
+body{margin:0;background:#101d2b;color:#fff;font-family:Arial,sans-serif}
+main{max-width:1300px;margin:auto;padding:15px}
+h1{font-size:23px}
+.scene{position:relative;width:100%;aspect-ratio:1670/942;overflow:hidden;border-radius:12px}
+.scene img{width:100%;height:100%;object-fit:fill;display:block}
+.zone{position:absolute;left:0;top:55%;width:33%;height:45%;cursor:pointer;background:transparent;border:0}
+.zone:focus-visible{outline:3px solid #fff;outline-offset:-3px}
+.panel{margin-top:15px;padding:16px;background:#20374b;border-radius:10px}
+button.action{background:#278e77;color:white;border:0;border-radius:8px;padding:12px 18px;margin:5px;cursor:pointer;font-weight:bold}
+#message{line-height:1.5}
 </style>
 </head>
 <body>
-<div class="wrap">
-<header>
-<div>
-<strong>MISSION TEC — Test V0.8</strong>
-<div class="small">Lit gauche — coussin conservé</div>
-</div>
-<div>
-<button id="reset" class="secondary">Remettre en désordre</button>
-<button id="compare" class="secondary">Voir l'image AVANT entière</button>
-</div>
-</header>
-
+<main>
+<h1>🎮 Mission TEC — Test du lit gauche</h1>
 <div class="scene">
-<img src="apres.png" alt="Chambre rangée">
-<img id="mess" class="mess" src="avant.png" alt="Lit défait">
-<img id="pillow" class="pillow" src="avant.png" alt="">
-<button id="hit" class="hit" aria-label="Examiner le lit gauche"></button>
+<img id="photo" src="avant.png" alt="Chambre à inspecter">
+<button class="zone" id="lit" aria-label="Examiner le lit gauche"></button>
 </div>
-
 <div class="panel">
-<div class="state" id="state">À corriger : lit gauche défait</div>
-<p id="message">Clique ou touche le lit gauche, puis choisis l'action correcte.</p>
-<div id="actions" hidden>
-<button id="fix">Refaire correctement le lit</button>
-<button id="cancel" class="secondary">Annuler</button>
+<p id="message">Observe la chambre et clique sur le lit gauche.</p>
+<button class="action" id="corriger" hidden>Refaire correctement le lit</button>
+<button class="action" id="recommencer">Recommencer</button>
 </div>
-<p class="small">Essai technique V0.8 : la couverture est remplacée, mais le coussin de la scène AVANT reste visible. Le raccord photographique reste à valider.</p>
-</div>
-</div>
-
+</main>
 <script>
-const mess=document.getElementById('mess');
-const pillow=document.getElementById('pillow');
-const actions=document.getElementById('actions');
-const state=document.getElementById('state');
-const message=document.getElementById('message');
-const compare=document.getElementById('compare');
-let fixed=false,full=false;
+const photo=document.getElementById("photo");
+const message=document.getElementById("message");
+const corriger=document.getElementById("corriger");
 
-function render(){
-mess.style.display=fixed?'none':'block';
-pillow.style.display=full?'none':'block';
-mess.style.clipPath=full?'none':'';
-state.textContent=fixed?'✓ Lit gauche remis en ordre':'À corriger : lit gauche défait';
-message.textContent=fixed?'La couverture est remise en ordre ; le coussin reste celui de la scène AVANT.':'Clique ou touche le lit gauche, puis choisis l’action correcte.';
-compare.textContent=full?'Revenir à la zone du lit':'Voir l’image AVANT entière';
-}
-
-document.getElementById('hit').onclick=()=>{
-if(!fixed)actions.hidden=false;
+document.getElementById("lit").onclick=()=>{
+ if(photo.getAttribute("src")==="avant.png"){
+  message.textContent="Le lit n'est pas fait. Que faut-il faire ?";
+  corriger.hidden=false;
+ }
 };
 
-document.getElementById('fix').onclick=()=>{
-fixed=true;
-full=false;
-actions.hidden=true;
-render();
+corriger.onclick=()=>{
+ photo.src="apres.png";
+ message.textContent="Bravo ! Le lit est correctement fait.";
+ corriger.hidden=true;
 };
 
-document.getElementById('cancel').onclick=()=>{
-actions.hidden=true;
+document.getElementById("recommencer").onclick=()=>{
+ photo.src="avant.png";
+ message.textContent="Observe la chambre et clique sur le lit gauche.";
+ corriger.hidden=true;
 };
-
-document.getElementById('reset').onclick=()=>{
-fixed=false;
-full=false;
-actions.hidden=true;
-render();
-};
-
-compare.onclick=()=>{
-if(fixed)fixed=false;
-full=!full;
-render();
-};
-
-render();
 </script>
 </body>
 </html>
