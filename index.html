@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mission TEC — Exploration V1.5</title>
+<title>Mission TEC — Exploration V1.6</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#101d2b;color:#fff;font-family:Arial,sans-serif}
@@ -16,11 +16,20 @@ h1{font-size:clamp(20px,3vw,26px);margin:6px 0}
 #litCorrige{display:none}
 #solCorrige{display:none}
 #lisseurCorrige{display:none}
+.camera img.layer{display:none}
 .zone{position:absolute;border:0;background:transparent;cursor:pointer;padding:0;z-index:2}
 .zone:focus-visible{outline:3px solid #ffe16a;outline-offset:-3px}
 #zoneLit{left:0;top:55%;width:33%;height:45%}
 #zoneSol{left:34%;top:68%;width:26%;height:27%}
 #zoneLisseur{left:61%;top:70%;width:16%;height:14%}
+#zoneServiette{left:12%;top:8%;width:10%;height:32%}
+#zoneVeste{left:28%;top:40%;width:11%;height:27%}
+#zoneHabitFond{left:69%;top:43%;width:15%;height:24%}
+#zoneMusique{left:59%;top:25%;width:12%;height:18%}
+#zoneBouilloire{left:62%;top:34%;width:5%;height:9%}
+#zoneCendrier{left:54%;top:30%;width:6%;height:9%}
+#zoneFenetre{left:60%;top:4%;width:8%;height:30%}
+#zoneArmoire{left:84%;top:7%;width:10%;height:84%}
 .nav{position:absolute;right:10px;bottom:10px;z-index:5;display:grid;grid-template-columns:repeat(3,42px);grid-template-rows:repeat(3,42px);gap:4px;align-items:center}
 .nav button{touch-action:manipulation;border:1px solid #fff8;border-radius:9px;background:#112b43d9;color:white;font-size:21px;font-weight:bold;cursor:pointer;touch-action:manipulation}
 .nav button:disabled{opacity:.35;cursor:default}
@@ -29,7 +38,7 @@ h1{font-size:clamp(20px,3vw,26px);margin:6px 0}
 .panel{margin-top:12px;padding:15px;background:#20374b;border-radius:10px}
 .progression{font-weight:bold;color:#8fe3c9}
 #message{line-height:1.5}
-.action{background:#278e77;color:white;border:0;border-radius:8px;padding:11px 14px;margin:4px;cursor:pointer;font-weight:bold}
+.action{background:#425d73;color:white;border:0;border-radius:8px;padding:11px 14px;margin:4px;cursor:pointer;font-weight:bold}
 .secondary{background:#425d73}
 #choix{display:none}
 .status{font-size:13px;color:#b9d4e5;margin-top:9px}
@@ -39,7 +48,7 @@ h1{font-size:clamp(20px,3vw,26px);margin:6px 0}
 </head>
 <body>
 <main>
-<h1>🎮 Mission TEC — Exploration de la chambre · V1.5</h1>
+<h1>🎮 Mission TEC — Exploration de la chambre · V1.6</h1>
 <p class="subtitle">Avance, regarde autour de toi et corrige les anomalies dans l'ordre que tu souhaites.</p>
 <div class="viewport" id="viewport">
   <div class="camera" id="camera">
@@ -47,6 +56,24 @@ h1{font-size:clamp(20px,3vw,26px);margin:6px 0}
     <img id="litCorrige" src="lit_calque.png" alt="">
     <img id="solCorrige" src="sol_calque.png" alt="">
     <img id="lisseurCorrige" src="lisseur_calque.png" alt="">
+    <img class="layer" id="servietteCorrige" src="serviette_calque.png" alt="">
+    <img class="layer" id="vesteCorrige" src="veste_calque.png" alt="">
+    <img class="layer" id="habitFondCorrige" src="habit_fond_calque.png" alt="">
+    <img class="layer" id="smartphoneCorrige" src="smartphone_calque.png" alt="">
+    <img class="layer" id="enceinteCorrige" src="enceinte_calque.png" alt="">
+    <img class="layer" id="bouilloireCorrige" src="bouilloire_calque.png" alt="">
+    <img class="layer" id="cendrierCorrige" src="cendrier_calque.png" alt="">
+    <img class="layer" id="fenetreCorrige" src="fenetre_calque.png" alt="">
+    <img class="layer" id="armoireRangeCorrige" src="armoire_range_calque.png" alt="">
+    <img class="layer" id="armoireFermeeCorrige" src="armoire_fermee_calque.png" alt="">
+    <button class="zone" id="zoneServiette" aria-label="Examiner la serviette"></button>
+    <button class="zone" id="zoneVeste" aria-label="Examiner la veste"></button>
+    <button class="zone" id="zoneHabitFond" aria-label="Examiner les habits sur le lit droit"></button>
+    <button class="zone" id="zoneMusique" aria-label="Examiner la musique"></button>
+    <button class="zone" id="zoneBouilloire" aria-label="Examiner la bouilloire"></button>
+    <button class="zone" id="zoneCendrier" aria-label="Examiner le cendrier"></button>
+    <button class="zone" id="zoneFenetre" aria-label="Examiner la fenêtre"></button>
+    <button class="zone" id="zoneArmoire" aria-label="Examiner l'armoire de droite"></button>
     <button class="zone" id="zoneLit" aria-label="Examiner le lit gauche"></button>
     <button class="zone" id="zoneSol" aria-label="Examiner les vêtements au sol"></button>
     <button class="zone" id="zoneLisseur" aria-label="Examiner le lisseur"></button>
@@ -63,7 +90,7 @@ h1{font-size:clamp(20px,3vw,26px);margin:6px 0}
   </div>
 </div>
 <div class="panel">
-  <div class="progression" id="progression">Corrections réalisées : 0 / 3</div>
+  <div class="progression" id="progression">Corrections réalisées : 0 / 12</div>
   <p id="message" aria-live="polite">Observe la chambre et clique sur une anomalie.</p>
   <div id="choix">
     <button class="action" id="correct"></button>
@@ -78,20 +105,62 @@ h1{font-size:clamp(20px,3vw,26px);margin:6px 0}
 <script>
 const $=id=>document.getElementById(id);
 const camera=$('camera'),message=$('message'),choix=$('choix'),correct=$('correct'),incorrect1=$('incorrect1'),incorrect2=$('incorrect2');
-const overlays={lit:$('litCorrige'),sol:$('solCorrige'),lisseur:$('lisseurCorrige')};
-const done={lit:false,sol:false,lisseur:false};
+const overlays={lit:['litCorrige'],sol:['solCorrige'],lisseur:['lisseurCorrige'],serviette:['servietteCorrige'],veste:['vesteCorrige'],habitFond:['habitFondCorrige'],musique:['smartphoneCorrige','enceinteCorrige'],bouilloire:['bouilloireCorrige'],cendrier:['cendrierCorrige'],fenetre:['fenetreCorrige'],armoireRange:['armoireRangeCorrige'],armoireFermee:['armoireFermeeCorrige']};
+const done=Object.fromEntries(Object.keys(overlays).map(key=>[key,false]));
+function showOverlay(type,show){for(const id of overlays[type])$(id).style.display=show?'block':'none';}
+function updateArmoireZone(){const zone=$('zoneArmoire');zone.setAttribute('aria-label',done.armoireRange?'Fermer l’armoire de droite':'Ranger l’armoire de droite');}
+
 let selection=null;
 const prompts={
  lit:{question:'Le lit gauche est défait. Que fais-tu ?',good:'Refaire correctement le lit',bad1:'Le laisser comme ça',bad2:'Cacher la couverture sous le lit',success:'Bravo ! Le lit gauche est correctement fait.'},
  sol:{question:'Des vêtements et des chaussures traînent au sol. Que fais-tu ?',good:'Ranger les vêtements et les chaussures à leur place',bad1:'Tout poser sur le lit',bad2:'Les laisser au sol',success:'Bravo ! Les vêtements et les chaussures sont rangés.'},
- lisseur:{question:'Un lisseur encore allumé est posé sur le sol. Quelle est la bonne procédure ?',good:'Éteindre, débrancher, laisser refroidir en sécurité, puis ranger',bad1:"Le ranger immédiatement dans l'armoire",bad2:'Le laisser refroidir sur le lit',success:'Bravo ! Le lisseur a été éteint, débranché et laissé refroidir sur une surface adaptée avant rangement.'}
+ lisseur:{question:'Un lisseur encore allumé est posé sur le sol. Quelle est la bonne procédure ?',good:'Éteindre, débrancher, laisser refroidir en sécurité, puis ranger',bad1:"Le ranger immédiatement dans l'armoire",bad2:'Le laisser refroidir sur le lit',success:'Bravo ! Le lisseur est sécurisé.'},
+ serviette:{question:'Une serviette est suspendue sur une armoire. Que faire ?',good:'La plier et la ranger à sa place',bad1:'La laisser sécher sur la porte',bad2:'La jeter par terre',success:'La serviette est rangée.'},
+ veste:{question:'Une veste EPIDE est abandonnée sur une chaise. Que faire ?',good:'La ranger correctement dans son espace prévu',bad1:'La poser au sol',bad2:'La laisser sur la chaise',success:'La veste est rangée.'},
+ habitFond:{question:'Des vêtements sont étalés sur le lit du fond. Que faire ?',good:'Les plier et les ranger à leur place',bad1:'Les déplacer sur l’autre lit',bad2:'Les laisser sur la couverture',success:'Le lit du fond est dégagé.'},
+ musique:{question:'La musique est trop forte dans la chambre. Quelle est la bonne réaction ?',good:'Arrêter la musique et éteindre le téléphone et l’enceinte',bad1:'Augmenter encore le volume',bad2:'Fermer la porte pour ne pas déranger',success:'La musique est arrêtée.'},
+ bouilloire:{question:'Une bouilloire électrique est installée dans la chambre. Que faire ?',good:'L’éteindre, la débrancher et la retirer de la chambre selon le règlement',bad1:'La cacher dans l’armoire',bad2:'La laisser branchée pour plus tard',success:'La bouilloire a été retirée.'},
+ cendrier:{question:'Un cendrier et une cigarette sont sur le rebord de la fenêtre. Que faire ?',good:'Retirer le cendrier et la cigarette, conformément à l’interdiction de fumer',bad1:'Les laisser sur le rebord',bad2:'Les cacher derrière le rideau',success:'Le cendrier et la cigarette ont été retirés.'},
+ fenetre:{question:'La fenêtre est restée grande ouverte. Que faire avant de quitter la chambre ?',good:'La fermer correctement',bad1:'La laisser ouverte en permanence',bad2:'Bloquer son battant avec un objet',success:'La fenêtre est fermée.'},
+ armoireRange:{question:'L’armoire de droite est en désordre. Que faire ?',good:'Plier les vêtements et organiser les affaires sur les étagères',bad1:'Tout tasser dans le fond',bad2:'Fermer la porte sans ranger',success:'L’armoire est rangée. Il reste à fermer sa porte.'},
+ armoireFermee:{question:'L’armoire est maintenant rangée mais sa porte est ouverte. Que faire ?',good:'Fermer correctement sa porte',bad1:'La laisser ouverte',bad2:'La bloquer avec une chaussure',success:'La porte de l’armoire est fermée.'}
 };
-function progression(){const total=Object.values(done).filter(Boolean).length;$('progression').textContent=`Corrections réalisées : ${total} / 3`;if(total===3)message.textContent="Bravo ! Tu as corrigé les trois premières anomalies. D'autres dangers restent à identifier."}
-function examiner(type){if(done[type])return;selection=type;const p=prompts[type];message.textContent=p.question;correct.textContent=p.good;incorrect1.textContent=p.bad1;incorrect2.textContent=p.bad2;choix.style.display='block'}
-$('zoneLit').onclick=()=>examiner('lit');$('zoneSol').onclick=()=>examiner('sol');$('zoneLisseur').onclick=()=>examiner('lisseur');
-correct.onclick=()=>{if(!selection)return;const type=selection;done[type]=true;overlays[type].style.display='block';message.textContent=prompts[type].success;choix.style.display='none';selection=null;progression()};
-function mauvaise(){message.textContent="Ce n'est pas la bonne solution. Réfléchis aux règles d'hygiène, de rangement et de sécurité."}
-incorrect1.onclick=mauvaise;incorrect2.onclick=mauvaise;
+function progression(){const total=Object.values(done).filter(Boolean).length;$('progression').textContent=`Corrections réalisées : ${total} / 12`;if(total===12)message.textContent="Bravo ! Tu as corrigé toutes les anomalies de la chambre !"}
+function examiner(type){
+ if(done[type])return;
+ if(type==='armoireFermee'&&!done.armoireRange)return;
+ selection=type;
+ const p=prompts[type];
+ message.textContent=p.question;
+ // Mélange Fisher-Yates : la bonne réponse ne garde jamais une position fixe.
+ const answers=[{label:p.good,valid:true},{label:p.bad1,valid:false},{label:p.bad2,valid:false}];
+ for(let i=answers.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[answers[i],answers[j]]=[answers[j],answers[i]];}
+ [correct,incorrect1,incorrect2].forEach((button,i)=>{
+  button.textContent=answers[i].label;
+  button.dataset.valid=String(answers[i].valid);
+  button.classList.add('secondary');
+ });
+ choix.style.display='block';
+}
+for(const [zone,type] of Object.entries({zoneLit:'lit',zoneSol:'sol',zoneLisseur:'lisseur',zoneServiette:'serviette',zoneVeste:'veste',zoneHabitFond:'habitFond',zoneMusique:'musique',zoneBouilloire:'bouilloire',zoneCendrier:'cendrier',zoneFenetre:'fenetre'}))$(zone).onclick=()=>examiner(type);
+$('zoneArmoire').onclick=()=>examiner(done.armoireRange?'armoireFermee':'armoireRange');
+function choisirReponse(event){
+ if(!selection)return;
+ const button=event.currentTarget;
+ if(button.dataset.valid!=='true'){
+  message.textContent="Ce n'est pas la bonne solution. Réfléchis aux règles d'hygiène, de rangement et de sécurité.";
+  return;
+ }
+ const type=selection;
+ done[type]=true;
+ showOverlay(type,true);
+ if(type==='armoireRange')updateArmoireZone();
+ message.textContent=prompts[type].success;
+ choix.style.display='none';
+ selection=null;
+ progression();
+}
+[correct,incorrect1,incorrect2].forEach(button=>button.addEventListener('click',choisirReponse));
 // V1.4 : toutes les couches (images et zones cliquables) suivent la même caméra.
 // L'image est une photographie 2D : le regard ne peut explorer que son contenu visible.
 const viewport=$('viewport');
@@ -181,8 +250,8 @@ viewport.addEventListener('wheel',e=>{
  if(e.target.closest('.nav'))return;
  e.preventDefault();setZoom(zoom+(e.deltaY<0?.12:-.12));
 },{passive:false});
-$('recommencer').onclick=()=>{for(const key of Object.keys(done)){done[key]=false;overlays[key].style.display='none'}selection=null;choix.style.display='none';message.textContent='Observe la chambre et clique sur une anomalie.';zoom=1;viewX=0;viewY=0;renderCamera();progression()};
-renderCamera();progression();
+$('recommencer').onclick=()=>{for(const key of Object.keys(done)){done[key]=false;showOverlay(key,false)}selection=null;choix.style.display='none';message.textContent='Observe la chambre et clique sur une anomalie.';zoom=1;viewX=0;viewY=0;renderCamera();progression();updateArmoireZone()};
+renderCamera();progression();updateArmoireZone();
 </script>
 </body>
 </html>
