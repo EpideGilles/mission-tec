@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mission TEC — Exploration V1.4</title>
+<title>Mission TEC — Exploration V1.5</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#101d2b;color:#fff;font-family:Arial,sans-serif}
@@ -13,9 +13,9 @@ h1{font-size:clamp(20px,3vw,26px);margin:6px 0}
 .viewport{position:relative;aspect-ratio:1670/942;width:100%;overflow:hidden;background:#253443;border-radius:12px;touch-action:none}
 .camera{position:absolute;inset:0;transform-origin:50% 50%;will-change:transform;transition:transform .18s ease}
 .camera img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none;user-select:none}
-#litCorrige{display:none;clip-path:polygon(0% 57%,8% 55%,18% 55%,30% 56%,33% 62%,33% 90%,31% 100%,0% 100%)}
-#solCorrige{display:none;clip-path:polygon(33% 70%,37% 67%,43% 68%,49% 72%,57% 76%,60% 84%,59% 94%,49% 97%,38% 96%,33% 90%)}
-#lisseurCorrige{display:none;clip-path:polygon(61% 72%,69% 72%,71% 69%,73% 67%,77% 67%,78% 71%,77% 79%,72% 83%,61% 83%)}
+#litCorrige{display:none}
+#solCorrige{display:none}
+#lisseurCorrige{display:none}
 .zone{position:absolute;border:0;background:transparent;cursor:pointer;padding:0;z-index:2}
 .zone:focus-visible{outline:3px solid #ffe16a;outline-offset:-3px}
 #zoneLit{left:0;top:55%;width:33%;height:45%}
@@ -39,14 +39,14 @@ h1{font-size:clamp(20px,3vw,26px);margin:6px 0}
 </head>
 <body>
 <main>
-<h1>🎮 Mission TEC — Exploration de la chambre</h1>
+<h1>🎮 Mission TEC — Exploration de la chambre · V1.5</h1>
 <p class="subtitle">Avance, regarde autour de toi et corrige les anomalies dans l'ordre que tu souhaites.</p>
 <div class="viewport" id="viewport">
   <div class="camera" id="camera">
     <img src="avant.png" alt="Chambre en désordre" id="avant">
-    <img id="litCorrige" src="lit_corrige.png" alt="">
-    <img id="solCorrige" src="sol_corrige.png" alt="">
-    <img id="lisseurCorrige" src="lisseur_corrige.png" alt="">
+    <img id="litCorrige" src="lit_calque.png" alt="">
+    <img id="solCorrige" src="sol_calque.png" alt="">
+    <img id="lisseurCorrige" src="lisseur_calque.png" alt="">
     <button class="zone" id="zoneLit" aria-label="Examiner le lit gauche"></button>
     <button class="zone" id="zoneSol" aria-label="Examiner les vêtements au sol"></button>
     <button class="zone" id="zoneLisseur" aria-label="Examiner le lisseur"></button>
