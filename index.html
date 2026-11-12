@@ -1,439 +1,105 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
-<title>Mission TEC — Chambre V1.2</title>
-
+<title>Mission TEC — Exploration V1.3</title>
 <style>
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  background: #101d2b;
-  color: white;
-  font-family: Arial, sans-serif;
-}
-
-main {
-  max-width: 1300px;
-  margin: auto;
-  padding: 15px;
-}
-
-h1 {
-  font-size: 24px;
-  margin-bottom: 8px;
-}
-
-.subtitle {
-  color: #b9cfdd;
-  margin-bottom: 16px;
-}
-
-.scene {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1670 / 942;
-  overflow: hidden;
-  border-radius: 12px;
-  background: #222;
-}
-
-.scene img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: fill;
-  pointer-events: none;
-}
-
-/* CORRECTION DU LIT */
-#litCorrige {
-  display: none;
-  clip-path: polygon(
-    0% 57%,
-    8% 55%,
-    18% 55%,
-    30% 56%,
-    33% 62%,
-    33% 90%,
-    31% 100%,
-    0% 100%
-  );
-}
-
-/* CORRECTION DES VETEMENTS AU SOL */
-#solCorrige {
-  display: none;
-  clip-path: polygon(
-    33% 70%,
-    37% 67%,
-    43% 68%,
-    49% 72%,
-    57% 76%,
-    60% 84%,
-    59% 94%,
-    49% 97%,
-    38% 96%,
-    33% 90%
-  );
-}
-
-/* CORRECTION DU LISSEUR */
-#lisseurCorrige {
-  display: none;
-  clip-path: polygon(
-    61% 72%,
-    69% 72%,
-    71% 69%,
-    73% 67%,
-    77% 67%,
-    78% 71%,
-    77% 79%,
-    72% 83%,
-    61% 83%
-  );
-}
-
-
-/* ZONES INTERACTIVES */
-.zone {
-  position: absolute;
-  background: transparent;
-  border: 0;
-  cursor: pointer;
-}
-
-.zone:focus-visible {
-  outline: 3px solid yellow;
-  outline-offset: -3px;
-}
-
-#zoneLit {
-  left: 0;
-  top: 55%;
-  width: 33%;
-  height: 45%;
-}
-
-#zoneSol {
-  left: 34%;
-  top: 68%;
-  width: 26%;
-  height: 27%;
-}
-
-#zoneLisseur {
-  left: 61%;
-  top: 70%;
-  width: 16%;
-  height: 14%;
-}
-
-/* INTERFACE */
-.panel {
-  margin-top: 15px;
-  padding: 18px;
-  background: #20374b;
-  border-radius: 10px;
-}
-
-.progression {
-  font-weight: bold;
-  color: #8fe3c9;
-  margin-bottom: 12px;
-}
-
-#message {
-  line-height: 1.5;
-}
-
-button.action {
-  background: #278e77;
-  color: white;
-  border: 0;
-  border-radius: 8px;
-  padding: 12px 18px;
-  margin: 5px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-button.secondary {
-  background: #425d73;
-}
-
-#choix {
-  display: none;
-}
-
-#choix button {
-  display: inline-block;
-}
-
-@media(max-width: 650px) {
-  h1 {
-    font-size: 20px;
-  }
-
-  button.action {
-    width: 100%;
-    margin: 5px 0;
-  }
-}
+*{box-sizing:border-box}
+body{margin:0;background:#101d2b;color:#fff;font-family:Arial,sans-serif}
+main{max-width:1300px;margin:auto;padding:12px}
+h1{font-size:clamp(20px,3vw,26px);margin:6px 0}
+.subtitle{color:#c5d5df;margin:8px 0 12px}
+.viewport{position:relative;aspect-ratio:1670/942;width:100%;overflow:hidden;background:#253443;border-radius:12px;touch-action:manipulation}
+.camera{position:absolute;inset:0;transform-origin:50% 50%;will-change:transform;transition:transform .32s ease}
+.camera img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none;user-select:none}
+#litCorrige{display:none;clip-path:polygon(0% 57%,8% 55%,18% 55%,30% 56%,33% 62%,33% 90%,31% 100%,0% 100%)}
+#solCorrige{display:none;clip-path:polygon(33% 70%,37% 67%,43% 68%,49% 72%,57% 76%,60% 84%,59% 94%,49% 97%,38% 96%,33% 90%)}
+#lisseurCorrige{display:none;clip-path:polygon(61% 72%,69% 72%,71% 69%,73% 67%,77% 67%,78% 71%,77% 79%,72% 83%,61% 83%)}
+.zone{position:absolute;border:0;background:transparent;cursor:pointer;padding:0;z-index:2}
+.zone:focus-visible{outline:3px solid #ffe16a;outline-offset:-3px}
+#zoneLit{left:0;top:55%;width:33%;height:45%}
+#zoneSol{left:34%;top:68%;width:26%;height:27%}
+#zoneLisseur{left:61%;top:70%;width:16%;height:14%}
+.nav{position:absolute;right:10px;bottom:10px;z-index:5;display:grid;grid-template-columns:repeat(3,42px);grid-template-rows:repeat(2,42px);gap:4px;align-items:center}
+.nav button{border:1px solid #fff8;border-radius:9px;background:#112b43d9;color:white;font-size:21px;font-weight:bold;cursor:pointer;touch-action:manipulation}
+.nav button:disabled{opacity:.35;cursor:default}
+#up{grid-column:2;grid-row:1}#left{grid-column:1;grid-row:2}#down{grid-column:2;grid-row:2}#right{grid-column:3;grid-row:2}
+.hint{position:absolute;left:10px;bottom:10px;z-index:4;background:#0b2139d9;border-radius:8px;padding:7px 10px;font-size:12px;max-width:calc(100% - 165px)}
+.panel{margin-top:12px;padding:15px;background:#20374b;border-radius:10px}
+.progression{font-weight:bold;color:#8fe3c9}
+#message{line-height:1.5}
+.action{background:#278e77;color:white;border:0;border-radius:8px;padding:11px 14px;margin:4px;cursor:pointer;font-weight:bold}
+.secondary{background:#425d73}
+#choix{display:none}
+.status{font-size:13px;color:#b9d4e5;margin-top:9px}
+@media(max-width:650px){main{padding:6px}.viewport{border-radius:5px}.nav{right:5px;bottom:5px;grid-template-columns:repeat(3,34px);grid-template-rows:repeat(2,34px);gap:3px}.hint{font-size:10px;max-width:calc(100% - 120px);padding:4px 6px}.action{display:block;width:100%;margin:6px 0}}
+@media(prefers-reduced-motion:reduce){.camera{transition:none}}
 </style>
 </head>
-
 <body>
 <main>
-
-<h1>🎮 Mission TEC — Remise en ordre de la chambre</h1>
-
-<p class="subtitle">
-  Observe la chambre, repère les anomalies et prends les bonnes décisions.
-</p>
-
-<div class="scene">
-
-  <!-- PHOTOGRAPHIE DE DEPART -->
-  <img src="avant.png" alt="Chambre en désordre">
-
-  <!-- CORRECTIONS INDEPENDANTES -->
-  <img id="litCorrige" src="lit_corrige.png" alt="">
-  <img id="solCorrige" src="sol_corrige.png" alt="">
-  <img id="lisseurCorrige" src="lisseur_corrige.png" alt="">
-
-  <!-- ZONES DE CLIC -->
-  <button
-    class="zone"
-    id="zoneLit"
-    aria-label="Examiner le lit gauche">
-  </button>
-
-  <button
-    class="zone"
-    id="zoneSol"
-    aria-label="Examiner les vêtements au sol">
-  </button>
-
-  <button
-    class="zone"
-    id="zoneLisseur"
-    aria-label="Examiner le lisseur allumé">
-  </button>
-
-</div>
-
-<div class="panel">
-
-  <div class="progression" id="progression">
-    Corrections réalisées : 0 / 3
+<h1>🎮 Mission TEC — Exploration de la chambre</h1>
+<p class="subtitle">Avance, regarde autour de toi et corrige les anomalies dans l'ordre que tu souhaites.</p>
+<div class="viewport" id="viewport">
+  <div class="camera" id="camera">
+    <img src="avant.png" alt="Chambre en désordre" id="avant">
+    <img id="litCorrige" src="lit_corrige.png" alt="">
+    <img id="solCorrige" src="sol_corrige.png" alt="">
+    <img id="lisseurCorrige" src="lisseur_corrige.png" alt="">
+    <button class="zone" id="zoneLit" aria-label="Examiner le lit gauche"></button>
+    <button class="zone" id="zoneSol" aria-label="Examiner les vêtements au sol"></button>
+    <button class="zone" id="zoneLisseur" aria-label="Examiner le lisseur"></button>
   </div>
-
-  <p id="message">
-    Observe la chambre et clique sur une anomalie.
-  </p>
-
+  <div class="hint">Flèches du clavier ou commandes tactiles · zoom et regard latéral</div>
+  <div class="nav" aria-label="Commandes de navigation">
+    <button id="up" aria-label="Avancer">↑</button>
+    <button id="left" aria-label="Regarder à gauche">←</button>
+    <button id="down" aria-label="Reculer">↓</button>
+    <button id="right" aria-label="Regarder à droite">→</button>
+  </div>
+</div>
+<div class="panel">
+  <div class="progression" id="progression">Corrections réalisées : 0 / 3</div>
+  <p id="message" aria-live="polite">Observe la chambre et clique sur une anomalie.</p>
   <div id="choix">
     <button class="action" id="correct"></button>
     <button class="action secondary" id="incorrect1"></button>
     <button class="action secondary" id="incorrect2"></button>
   </div>
-
-  <button class="action secondary" id="recommencer">
-    🔄 Recommencer
-  </button>
-
+  <button class="action secondary" id="retour">⌂ Retour à l'entrée</button>
+  <button class="action secondary" id="recommencer">↻ Recommencer la partie</button>
+  <div class="status" id="cameraStatus" aria-live="polite">Vue : entrée · Zoom : 100 %</div>
 </div>
-
 </main>
-
 <script>
-
-/* ELEMENTS DE LA PAGE */
-
-const lit = document.getElementById("litCorrige");
-const sol = document.getElementById("solCorrige");
-const lisseur = document.getElementById("lisseurCorrige");
-
-const message = document.getElementById("message");
-const choix = document.getElementById("choix");
-
-const correct = document.getElementById("correct");
-const incorrect1 = document.getElementById("incorrect1");
-const incorrect2 = document.getElementById("incorrect2");
-
-const progression = document.getElementById("progression");
-
-/* ETATS INDEPENDANTS */
-
-let litFait = false;
-let solRange = false;
-let lisseurSecurise = false;
-
-let selection = null;
-
-/* PROGRESSION */
-
-function afficherProgression() {
-
-  const total =
-    Number(litFait) +
-    Number(solRange) +
-    Number(lisseurSecurise);
-
-  progression.textContent =
-    "Corrections réalisées : " + total + " / 3";
-
-  if (total === 3) {
-    message.textContent =
-      "Bravo ! Tu as corrigé les trois premières anomalies. D'autres dangers restent à identifier dans la chambre.";
-  }
-}
-
-/* EXAMINER UNE ANOMALIE */
-
-function examiner(type) {
-
-  if (type === "lit" && litFait) return;
-  if (type === "sol" && solRange) return;
-  if (type === "lisseur" && lisseurSecurise) return;
-
-  selection = type;
-  choix.style.display = "block";
-
-  if (type === "lit") {
-
-    message.textContent =
-      "Le lit gauche est défait. Que fais-tu ?";
-
-    correct.textContent =
-      "Refaire correctement le lit";
-
-    incorrect1.textContent =
-      "Le laisser comme ça";
-
-    incorrect2.textContent =
-      "Cacher la couverture sous le lit";
-
-  } else if (type === "sol") {
-
-    message.textContent =
-      "Des vêtements et des chaussures traînent au sol. Que fais-tu ?";
-
-    correct.textContent =
-      "Ranger les vêtements et les chaussures à leur place";
-
-    incorrect1.textContent =
-      "Tout poser sur le lit";
-
-    incorrect2.textContent =
-      "Les laisser au sol";
-
-  } else if (type === "lisseur") {
-
-    message.textContent =
-      "Un lisseur encore allumé est posé sur le sol. Quelle est la bonne procédure ?";
-
-    correct.textContent =
-      "Éteindre, débrancher, laisser refroidir en sécurité, puis ranger";
-
-    incorrect1.textContent =
-      "Le ranger immédiatement dans l'armoire";
-
-    incorrect2.textContent =
-      "Le laisser refroidir sur le lit";
-  }
-}
-
-/* CLIC SUR LES OBJETS */
-
-document.getElementById("zoneLit").onclick =
-  () => examiner("lit");
-
-document.getElementById("zoneSol").onclick =
-  () => examiner("sol");
-
-document.getElementById("zoneLisseur").onclick =
-  () => examiner("lisseur");
-
-/* BONNE REPONSE */
-
-correct.onclick = () => {
-
-  if (selection === "lit") {
-
-    litFait = true;
-    lit.style.display = "block";
-
-    message.textContent =
-      "Bravo ! Le lit gauche est correctement fait.";
-
-  } else if (selection === "sol") {
-
-    solRange = true;
-    sol.style.display = "block";
-
-    message.textContent =
-      "Bravo ! Les vêtements et les chaussures sont rangés.";
-
-  } else if (selection === "lisseur") {
-
-    lisseurSecurise = true;
-    lisseur.style.display = "block";
-
-    message.textContent =
-      "Bravo ! Le lisseur est éteint, débranché et a refroidi sur une surface adaptée avant d'être rangé.";
-  }
-
-  choix.style.display = "none";
-  selection = null;
-
-  afficherProgression();
+const $=id=>document.getElementById(id);
+const camera=$('camera'),message=$('message'),choix=$('choix'),correct=$('correct'),incorrect1=$('incorrect1'),incorrect2=$('incorrect2');
+const overlays={lit:$('litCorrige'),sol:$('solCorrige'),lisseur:$('lisseurCorrige')};
+const done={lit:false,sol:false,lisseur:false};
+let selection=null;
+const prompts={
+ lit:{question:'Le lit gauche est défait. Que fais-tu ?',good:'Refaire correctement le lit',bad1:'Le laisser comme ça',bad2:'Cacher la couverture sous le lit',success:'Bravo ! Le lit gauche est correctement fait.'},
+ sol:{question:'Des vêtements et des chaussures traînent au sol. Que fais-tu ?',good:'Ranger les vêtements et les chaussures à leur place',bad1:'Tout poser sur le lit',bad2:'Les laisser au sol',success:'Bravo ! Les vêtements et les chaussures sont rangés.'},
+ lisseur:{question:'Un lisseur encore allumé est posé sur le sol. Quelle est la bonne procédure ?',good:'Éteindre, débrancher, laisser refroidir en sécurité, puis ranger',bad1:"Le ranger immédiatement dans l'armoire",bad2:'Le laisser refroidir sur le lit',success:'Bravo ! Le lisseur a été éteint, débranché et laissé refroidir sur une surface adaptée avant rangement.'}
 };
-
-/* MAUVAISE REPONSE */
-
-function mauvaiseReponse() {
-
-  message.textContent =
-    "Ce n'est pas la bonne solution. Réfléchis aux règles d'hygiène, de rangement et de sécurité.";
-}
-
-incorrect1.onclick = mauvaiseReponse;
-incorrect2.onclick = mauvaiseReponse;
-
-/* RECOMMENCER */
-
-document.getElementById("recommencer").onclick = () => {
-
-  litFait = false;
-  solRange = false;
-  lisseurSecurise = false;
-
-  selection = null;
-
-  lit.style.display = "none";
-  sol.style.display = "none";
-  lisseur.style.display = "none";
-
-  choix.style.display = "none";
-
-  message.textContent =
-    "Observe la chambre et clique sur une anomalie.";
-
-  afficherProgression();
-};
-
-afficherProgression();
-
+function progression(){const total=Object.values(done).filter(Boolean).length;$('progression').textContent=`Corrections réalisées : ${total} / 3`;if(total===3)message.textContent="Bravo ! Tu as corrigé les trois premières anomalies. D'autres dangers restent à identifier."}
+function examiner(type){if(done[type])return;selection=type;const p=prompts[type];message.textContent=p.question;correct.textContent=p.good;incorrect1.textContent=p.bad1;incorrect2.textContent=p.bad2;choix.style.display='block'}
+$('zoneLit').onclick=()=>examiner('lit');$('zoneSol').onclick=()=>examiner('sol');$('zoneLisseur').onclick=()=>examiner('lisseur');
+correct.onclick=()=>{if(!selection)return;const type=selection;done[type]=true;overlays[type].style.display='block';message.textContent=prompts[type].success;choix.style.display='none';selection=null;progression()};
+function mauvaise(){message.textContent="Ce n'est pas la bonne solution. Réfléchis aux règles d'hygiène, de rangement et de sécurité."}
+incorrect1.onclick=mauvaise;incorrect2.onclick=mauvaise;
+// Les images, les masques et les zones de clic partagent exactement la même transformation.
+let level=0,pan=0;
+const maxLevel=4,maxPan=4;
+function updateCamera(){const scale=1+level*.17;const limit=(1-1/scale)*50;const offset=-pan*(limit/maxPan);camera.style.transform=`scale(${scale}) translateX(${offset}%)`;const labels=pan<0?'gauche':pan>0?'droite':'centre';$('cameraStatus').textContent=`Vue : ${labels} · Zoom : ${Math.round(scale*100)} %`;
+$('up').disabled=level>=maxLevel;$('down').disabled=level===0;$('left').disabled=pan<=-maxPan;$('right').disabled=pan>=maxPan;}
+function navigate(dir){if(dir==='up'){level=Math.min(maxLevel,level+1)}else if(dir==='down'){level=Math.max(0,level-1);if(level===0)pan=0}else if(dir==='left'){if(level===0)level=1;pan=Math.max(-maxPan,pan-1)}else if(dir==='right'){if(level===0)level=1;pan=Math.min(maxPan,pan+1)}updateCamera()}
+for(const dir of ['up','down','left','right'])$(dir).onclick=()=>navigate(dir);
+document.addEventListener('keydown',event=>{const map={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right'};if(!map[event.key]||event.altKey||event.ctrlKey||event.metaKey)return;const active=document.activeElement;if(active&&['INPUT','TEXTAREA','SELECT'].includes(active.tagName))return;event.preventDefault();navigate(map[event.key])});
+$('retour').onclick=()=>{level=0;pan=0;updateCamera()};
+$('recommencer').onclick=()=>{for(const key of Object.keys(done)){done[key]=false;overlays[key].style.display='none'}selection=null;choix.style.display='none';message.textContent='Observe la chambre et clique sur une anomalie.';level=0;pan=0;updateCamera();progression()};
+updateCamera();progression();
 </script>
-
 </body>
 </html>
