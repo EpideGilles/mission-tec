@@ -133,14 +133,14 @@ document.addEventListener('keydown',event=>{
 });
 $('retour').onclick=()=>{zoom=1;viewX=0;viewY=0;renderCamera()};
 // Glisser à la souris ou au doigt : déplacer le regard, sans déclencher les anomalies.
-const pointers=new Map();let dragStart=null, moved=false, pinchDistance=null;
+const pointers=new Map();let dragStart=null, moved=false, pinchDistance=null, suppressDragClick=false;
 function distance(){const pts=[...pointers.values()];return Math.hypot(pts[0].x-pts[1].x,pts[0].y-pts[1].y);}
 viewport.addEventListener('pointerdown',e=>{
  if(e.target.closest('button:not(.zone)'))return;
  pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
- if(pointers.size===1){dragStart={x:e.clientX,y:e.clientY};moved=false;}
+ if(pointers.size===1){dragStart={x:e.clientX,y:e.clientY};moved=false;suppressDragClick=false;}
  if(pointers.size===2){pinchDistance=distance();moved=true;}
- viewport.setPointerCapture(e.pointerId);
+ // La capture ne commence qu'après un vrai déplacement : un clic simple reste disponible.
 });
 viewport.addEventListener('pointermove',e=>{
  if(!pointers.has(e.pointerId))return;
@@ -153,6 +153,7 @@ viewport.addEventListener('pointermove',e=>{
  const dx=e.clientX-prev.x,dy=e.clientY-prev.y;
  if(dragStart&&Math.hypot(e.clientX-dragStart.x,e.clientY-dragStart.y)>7)moved=true;
  if(!moved)return;
+ if(!viewport.hasPointerCapture(e.pointerId))viewport.setPointerCapture(e.pointerId);
  if(zoom===1)zoom=1.2;
  const rect=viewport.getBoundingClientRect();
  viewX+=dx/rect.width*100;viewY+=dy/rect.height*100;
@@ -160,25 +161,22 @@ viewport.addEventListener('pointermove',e=>{
 });
 function endPointer(e){
  const wasTap=!moved && pointers.size===1;
+ const wasDrag=moved;
+ if(wasDrag)suppressDragClick=true;
  pointers.delete(e.pointerId);
  if(pointers.size<2)pinchDistance=null;
  if(pointers.size===0){
   dragStart=null;
-  if(wasTap){
-   // Pointer capture can retarget click; find the actual anomaly under the finger.
-   const target=document.elementFromPoint(e.clientX,e.clientY);
-   if(target?.classList.contains('zone') && e.pointerType==='touch')target.click();
-  }
-  setTimeout(()=>{moved=false},0);
+  // Lors d'un glissement, la capture évite un clic parasite sur une anomalie.
+  // Pour un tap, le navigateur déclenche lui-même le clic sur la zone.
+  if(wasDrag && viewport.hasPointerCapture(e.pointerId))viewport.releasePointerCapture(e.pointerId);
+  moved=false;
  }
 }
+viewport.addEventListener('click',e=>{if(suppressDragClick){e.preventDefault();e.stopPropagation();suppressDragClick=false;}},true);
 viewport.addEventListener('pointerup',endPointer);
 viewport.addEventListener('pointercancel',endPointer);
-// Empêche un clic sur une anomalie après un glissement.
-for(const id of ['zoneLit','zoneSol','zoneLisseur']){
- const el=$(id),original=el.onclick;
- el.onclick=e=>{if(moved){e.preventDefault();return;}original(e)};
-}
+// Les zones conservent leur clic natif, sans interception par la navigation.
 viewport.addEventListener('wheel',e=>{
  if(e.target.closest('.nav'))return;
  e.preventDefault();setZoom(zoom+(e.deltaY<0?.12:-.12));
