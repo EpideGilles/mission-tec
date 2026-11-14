@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mission TEC — Exploration V2.0</title>
+<title>Mission TEC — Exploration V3.0</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#101d2b;color:#fff;font-family:Arial,sans-serif}
@@ -23,16 +23,16 @@ h1{font-size:clamp(20px,3vw,26px);margin:6px 0}
 #zoneSol{left:34%;top:67%;width:28%;height:27%}
 #zoneLisseur{left:66%;top:68%;width:12%;height:13%}
 #zoneServiette{left:13%;top:8%;width:10%;height:31%}
-#zoneVeste{left:57%;top:40%;width:12%;height:26%}
-#zoneHabitFond{left:72%;top:43%;width:13%;height:12%}
-#zoneMusique{left:58%;top:35%;width:10%;height:8%}
+#zoneVeste{left:57.2%;top:41%;width:11%;height:24%}
+#zoneHabitFond{left:72%;top:45%;width:12%;height:10%}
+#zoneMusique{left:58.3%;top:36.5%;width:7.5%;height:5.5%}
 #zoneBouilloire{left:28%;top:31%;width:5%;height:12%}
 #zonePoussiere{left:37%;top:56%;width:19%;height:5%}
-#zoneLampesG{left:26%;top:28%;width:4%;height:13%}
-#zoneLampesD{left:71%;top:27%;width:5%;height:10%}
-#zoneCendrier{left:51%;top:32%;width:7%;height:6%}
-#zoneFenetre{left:60%;top:4%;width:5%;height:29%}
-#zoneArmoire{left:85%;top:7%;width:12%;height:86%}
+#zoneLampesG{left:26%;top:28%;width:3%;height:12%}
+#zoneLampesD{left:71.5%;top:27%;width:4%;height:10%}
+#zoneCendrier{left:50.5%;top:33%;width:6%;height:5%}
+#zoneFenetre{left:59%;top:3%;width:6.5%;height:29%}
+#zoneArmoire{left:86%;top:8%;width:10%;height:82%}
 .nav{position:absolute;right:10px;bottom:10px;z-index:5;display:grid;grid-template-columns:repeat(3,42px);grid-template-rows:repeat(3,42px);gap:4px;align-items:center}
 .nav button{touch-action:manipulation;border:1px solid #fff8;border-radius:9px;background:#112b43d9;color:white;font-size:21px;font-weight:bold;cursor:pointer;touch-action:manipulation}
 .nav button:disabled{opacity:.35;cursor:default}
@@ -48,8 +48,8 @@ h1{font-size:clamp(20px,3vw,26px);margin:6px 0}
 @media(max-width:650px){main{padding:6px}.viewport{border-radius:5px}.nav{right:5px;bottom:5px;grid-template-columns:repeat(3,34px);grid-template-rows:repeat(3,34px);gap:3px}.hint{font-size:10px;max-width:calc(100% - 120px);padding:4px 6px}.action{display:block;width:100%;margin:6px 0}}
 @media(prefers-reduced-motion:reduce){.camera{transition:none}}
 #sceneRecompense{display:none;position:absolute;inset:0;z-index:20;align-items:center;justify-content:center;flex-direction:column;text-align:center;background:#081a2ac9;font-size:clamp(18px,3vw,36px);font-weight:900;pointer-events:none;text-shadow:0 3px 12px #000}
-#sceneRecompense strong{font-size:clamp(90px,25vw,280px);line-height:1;color:#ffdd67;display:block;animation:pop .7s ease-out}
-.pluie{font-size:clamp(18px,4vw,50px);animation:confetti 2s ease-in-out infinite alternate}
+#sceneRecompense .recompenseTexte{position:relative;z-index:2}#sceneRecompense strong{font-size:clamp(90px,25vw,280px);line-height:1;color:#ffdd67;display:block;animation:pop .7s ease-out}
+#confettis{position:absolute;inset:0;overflow:hidden;pointer-events:none}.confetti-piece{position:absolute;top:-15%;width:9px;height:16px;opacity:.95;animation:confettiFall var(--duration) linear var(--delay) infinite;transform:rotate(var(--rotate));background:var(--color)}@keyframes confettiFall{0%{transform:translate3d(0,-10px,0) rotate(0)}100%{transform:translate3d(var(--drift),115vh,0) rotate(960deg)}}.pluie{font-size:clamp(18px,4vw,50px);animation:confetti 2s ease-in-out infinite alternate}
 @keyframes pop{from{transform:scale(.1) rotate(-20deg);opacity:0}to{transform:scale(1);opacity:1}}
 @keyframes confetti{from{transform:translateY(-20px) rotate(-8deg)}to{transform:translateY(28px) rotate(8deg)}}
 @media(max-width:650px){.viewport{min-height:250px;aspect-ratio:1670/942}.timerbar{flex-wrap:wrap}.timerbar strong{font-size:23px}}
@@ -57,25 +57,25 @@ h1{font-size:clamp(20px,3vw,26px);margin:6px 0}
 </head>
 <body>
 <main>
-<h1>🎮 Mission TEC — Exploration de la chambre · V2.0</h1>
+<h1>🎮 Mission TEC — Exploration de la chambre · V3.0</h1>
 <p class="subtitle">Avance, regarde autour de toi et corrige les anomalies dans l'ordre que tu souhaites.</p>
 <div class="viewport" id="viewport">
   <div class="camera" id="camera">
-    <img src="avant_v2.png" alt="Chambre en désordre" id="avant">
-    <img id="litCorrige" src="tec2_lit.png" alt="">
-    <img id="solCorrige" src="tec2_sol.png" alt="">
-    <img id="lisseurCorrige" src="tec2_lisseur.png" alt="">
-    <img class="layer" id="servietteCorrige" src="tec2_serviette.png" alt="">
-    <img class="layer" id="vesteCorrige" src="tec2_veste.png" alt="">
-    <img class="layer" id="habitFondCorrige" src="tec2_chaussettes.png" alt="">
-    <img class="layer" id="enceinteCorrige" src="tec2_enceinte.png" alt="">
-    <img class="layer" id="bouilloireCorrige" src="tec2_bouilloire.png" alt="">
-    <img class="layer" id="cendrierCorrige" src="tec2_cendrier.png" alt="">
-    <img class="layer" id="fenetreCorrige" src="tec2_fenetre.png" alt="">
-    <img class="layer" id="armoireRangeCorrige" src="tec2_armoire_range.png" alt="">
-    <img class="layer" id="poussiereCorrige" src="tec2_poussiere.png" alt="">
-    <img class="layer" id="lampesCorrige" src="tec2_lampe.png" alt="">
-    <img class="layer" id="armoireFermeeCorrige" src="tec2_armoire_fermee.png" alt="">
+    <img src="avant_v3.png" alt="Chambre en désordre" id="avant">
+    <img id="litCorrige" src="tec3_lit.png" alt="">
+    <img id="solCorrige" src="tec3_sol.png" alt="">
+    <img id="lisseurCorrige" src="tec3_lisseur.png" alt="">
+    <img class="layer" id="servietteCorrige" src="tec3_serviette.png" alt="">
+    <img class="layer" id="vesteCorrige" src="tec3_veste.png" alt="">
+    <img class="layer" id="habitFondCorrige" src="tec3_chaussettes.png" alt="">
+    <img class="layer" id="enceinteCorrige" src="tec3_enceinte.png" alt="">
+    <img class="layer" id="bouilloireCorrige" src="tec3_bouilloire.png" alt="">
+    <img class="layer" id="cendrierCorrige" src="tec3_cendrier.png" alt="">
+    <img class="layer" id="fenetreCorrige" src="tec3_fenetre.png" alt="">
+    <img class="layer" id="armoireRangeCorrige" src="tec3_armoire_range.png" alt="">
+    <img class="layer" id="poussiereCorrige" src="tec3_poussiere.png" alt="">
+    <img class="layer" id="lampesCorrige" src="tec3_lampe.png" alt="">
+    <img class="layer" id="armoireFermeeCorrige" src="tec3_armoire_fermee.png" alt="">
     <button class="zone" id="zoneServiette" aria-label="Examiner la serviette"></button>
     <button class="zone" id="zoneVeste" aria-label="Examiner la veste"></button>
     <button class="zone" id="zoneHabitFond" aria-label="Examiner les chaussettes sur le lit droit"></button>
@@ -92,7 +92,7 @@ h1{font-size:clamp(20px,3vw,26px);margin:6px 0}
     <button class="zone" id="zoneLisseur" aria-label="Examiner le lisseur"></button>
   </div>
   <div class="hint">Glisser pour regarder · molette/pincement pour zoomer · flèches disponibles</div>
-  <div id="sceneRecompense" aria-live="polite">🎉 MISSION RÉUSSIE <strong>3</strong> 🎊</div>
+  <div id="sceneRecompense" aria-live="polite"><div id="confettis" aria-hidden="true"></div><div class="recompenseTexte">🎉 MISSION RÉUSSIE <strong>3</strong></div></div>
   <div class="nav" aria-label="Commandes de navigation">
     <button id="up" aria-label="Avancer et zoomer">↑</button>
     <button id="lookUp" aria-label="Lever les yeux">⇧</button>
@@ -149,7 +149,8 @@ function stopMusique(){try{if(osc){osc.stop();osc.disconnect();osc=null;}if(audi
 const DUREE=240;let secondes=DUREE,intervalle=null,etat='attente';
 function afficherTemps(){const mm=String(Math.floor(secondes/60)).padStart(2,'0'),ss=String(secondes%60).padStart(2,'0');$('timer').textContent=mm+':'+ss;$('timerbar').classList.toggle('danger',secondes<=60);}
 function arreterChrono(){if(intervalle!==null){clearInterval(intervalle);intervalle=null;}}
-function victoire(){stopMusique();etat='gagne';arreterChrono();choix.style.display='none';$('finale').style.display='block';$('sceneRecompense').style.display='flex';$('demarrer').disabled=true;message.textContent='Bravo ! Tu as terminé la mission avant la fin du temps !';}
+function lancerConfettis(){const box=$('confettis');box.replaceChildren();const colors=['#ffdd45','#ff568b','#4de1ff','#8ef2a7','#ae8cff','#ffffff'];for(let i=0;i<110;i++){const piece=document.createElement('i');piece.className='confetti-piece';piece.style.left=(Math.random()*100)+'%';piece.style.setProperty('--duration',(2.1+Math.random()*2.7)+'s');piece.style.setProperty('--delay',(-Math.random()*4)+'s');piece.style.setProperty('--drift',((Math.random()-.5)*240)+'px');piece.style.setProperty('--rotate',(Math.random()*360)+'deg');piece.style.setProperty('--color',colors[i%colors.length]);box.append(piece)}}
+function victoire(){lancerConfettis();stopMusique();etat='gagne';arreterChrono();choix.style.display='none';$('finale').style.display='block';$('sceneRecompense').style.display='flex';$('demarrer').disabled=true;message.textContent='Bravo ! Tu as terminé la mission avant la fin du temps !';}
 function defaite(){stopMusique();etat='perdu';arreterChrono();choix.style.display='none';selection=null;$('demarrer').disabled=true;message.textContent='⏰ Temps écoulé ! Mission non réussie. Aucun chiffre révélé. Recommence pour retenter ta chance.';}
 function progression(){const total=Object.values(done).filter(Boolean).length;$('progression').textContent=`Corrections réalisées : ${total} / 14`;if(total===14&&etat==='jeu')victoire();}
 $('demarrer').onclick=()=>{if(etat!=='attente')return;etat='jeu';startMusique();$('demarrer').disabled=true;message.textContent='La mission commence : 4 minutes pour corriger les 14 anomalies !';intervalle=setInterval(()=>{if(etat!=='jeu')return;secondes=Math.max(0,secondes-1);afficherTemps();if(secondes===0)defaite();},1000);};
@@ -280,7 +281,7 @@ viewport.addEventListener('wheel',e=>{
  if(e.target.closest('.nav'))return;
  e.preventDefault();setZoom(zoom+(e.deltaY<0?.12:-.12));
 },{passive:false});
-$('recommencer').onclick=()=>{stopMusique();arreterChrono();etat='attente';secondes=DUREE;afficherTemps();$('demarrer').disabled=false;$('finale').style.display='none';$('sceneRecompense').style.display='none';for(const key of Object.keys(done)){done[key]=false;showOverlay(key,false)}selection=null;choix.style.display='none';message.textContent='Clique sur « Commencer la mission » pour lancer le chronomètre.';zoom=1;viewX=0;viewY=0;renderCamera();progression();updateArmoireZone()};
+$('recommencer').onclick=()=>{stopMusique();arreterChrono();etat='attente';secondes=DUREE;afficherTemps();$('demarrer').disabled=false;$('finale').style.display='none';$('sceneRecompense').style.display='none';$('confettis').replaceChildren();for(const key of Object.keys(done)){done[key]=false;showOverlay(key,false)}selection=null;choix.style.display='none';message.textContent='Clique sur « Commencer la mission » pour lancer le chronomètre.';zoom=1;viewX=0;viewY=0;renderCamera();progression();updateArmoireZone()};
 renderCamera();progression();updateArmoireZone();
 </script>
 </body>
