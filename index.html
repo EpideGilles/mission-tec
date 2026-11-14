@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mission TEC — Exploration V1.8</title>
+<title>Mission TEC — Exploration V2.0</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#101d2b;color:#fff;font-family:Arial,sans-serif}
@@ -19,20 +19,20 @@ h1{font-size:clamp(20px,3vw,26px);margin:6px 0}
 .camera img.layer{display:none}
 .zone{position:absolute;border:0;background:transparent;cursor:pointer;padding:0;z-index:2}
 .zone:focus-visible{outline:3px solid #ffe16a;outline-offset:-3px}
-#zoneLit{left:0;top:55%;width:33%;height:45%}
-#zoneSol{left:34%;top:68%;width:26%;height:27%}
-#zoneLisseur{left:61%;top:70%;width:16%;height:14%}
-#zoneServiette{left:12%;top:8%;width:10%;height:32%}
-#zoneVeste{left:28%;top:40%;width:11%;height:27%}
-#zoneHabitFond{left:73%;top:44%;width:12%;height:13%}
-#zoneMusique{left:58%;top:35%;width:9%;height:9%}
-#zoneBouilloire{left:27%;top:29%;width:7%;height:17%}
-#zonePoussiere{left:37%;top:54%;width:19%;height:8%}
-#zoneLampesG{left:26%;top:26%;width:5%;height:13%}
-#zoneLampesD{left:71%;top:24%;width:5%;height:13%}
-#zoneCendrier{left:51%;top:30%;width:8%;height:8%}
-#zoneFenetre{left:59%;top:4%;width:7%;height:30%}
-#zoneArmoire{left:84%;top:7%;width:12%;height:84%}
+#zoneLit{left:0%;top:55%;width:32%;height:45%}
+#zoneSol{left:34%;top:67%;width:28%;height:27%}
+#zoneLisseur{left:66%;top:68%;width:12%;height:13%}
+#zoneServiette{left:13%;top:8%;width:10%;height:31%}
+#zoneVeste{left:57%;top:40%;width:12%;height:26%}
+#zoneHabitFond{left:72%;top:43%;width:13%;height:12%}
+#zoneMusique{left:58%;top:35%;width:10%;height:8%}
+#zoneBouilloire{left:28%;top:31%;width:5%;height:12%}
+#zonePoussiere{left:37%;top:56%;width:19%;height:5%}
+#zoneLampesG{left:26%;top:28%;width:4%;height:13%}
+#zoneLampesD{left:71%;top:27%;width:5%;height:10%}
+#zoneCendrier{left:51%;top:32%;width:7%;height:6%}
+#zoneFenetre{left:60%;top:4%;width:5%;height:29%}
+#zoneArmoire{left:85%;top:7%;width:12%;height:86%}
 .nav{position:absolute;right:10px;bottom:10px;z-index:5;display:grid;grid-template-columns:repeat(3,42px);grid-template-rows:repeat(3,42px);gap:4px;align-items:center}
 .nav button{touch-action:manipulation;border:1px solid #fff8;border-radius:9px;background:#112b43d9;color:white;font-size:21px;font-weight:bold;cursor:pointer;touch-action:manipulation}
 .nav button:disabled{opacity:.35;cursor:default}
@@ -57,29 +57,28 @@ h1{font-size:clamp(20px,3vw,26px);margin:6px 0}
 </head>
 <body>
 <main>
-<h1>🎮 Mission TEC — Exploration de la chambre · V1.8</h1>
+<h1>🎮 Mission TEC — Exploration de la chambre · V2.0</h1>
 <p class="subtitle">Avance, regarde autour de toi et corrige les anomalies dans l'ordre que tu souhaites.</p>
 <div class="viewport" id="viewport">
   <div class="camera" id="camera">
-    <img src="avant.png" alt="Chambre en désordre" id="avant">
-    <img id="litCorrige" src="lit_calque.png" alt="">
-    <img id="solCorrige" src="sol_calque.png" alt="">
-    <img id="lisseurCorrige" src="lisseur_calque.png" alt="">
-    <img class="layer" id="servietteCorrige" src="serviette_calque.png" alt="">
-    <img class="layer" id="vesteCorrige" src="veste_calque.png" alt="">
-    <img class="layer" id="habitFondCorrige" src="habit_fond_calque.png" alt="">
-    <img class="layer" id="smartphoneCorrige" src="smartphone_calque.png" alt="">
-    <img class="layer" id="enceinteCorrige" src="enceinte_calque.png" alt="">
-    <img class="layer" id="bouilloireCorrige" src="bouilloire_calque.png" alt="">
-    <img class="layer" id="cendrierCorrige" src="cendrier_calque.png" alt="">
-    <img class="layer" id="fenetreCorrige" src="fenetre_calque.png" alt="">
-    <img class="layer" id="armoireRangeCorrige" src="armoire_range_calque.png" alt="">
-    <img class="layer" id="poussiereCorrige" src="poussiere_calque.png" alt="">
-    <img class="layer" id="lampesCorrige" src="lampes_eteintes_calque.png" alt="">
-    <img class="layer" id="armoireFermeeCorrige" src="armoire_fermee_calque.png" alt="">
+    <img src="avant_v2.png" alt="Chambre en désordre" id="avant">
+    <img id="litCorrige" src="tec2_lit.png" alt="">
+    <img id="solCorrige" src="tec2_sol.png" alt="">
+    <img id="lisseurCorrige" src="tec2_lisseur.png" alt="">
+    <img class="layer" id="servietteCorrige" src="tec2_serviette.png" alt="">
+    <img class="layer" id="vesteCorrige" src="tec2_veste.png" alt="">
+    <img class="layer" id="habitFondCorrige" src="tec2_chaussettes.png" alt="">
+    <img class="layer" id="enceinteCorrige" src="tec2_enceinte.png" alt="">
+    <img class="layer" id="bouilloireCorrige" src="tec2_bouilloire.png" alt="">
+    <img class="layer" id="cendrierCorrige" src="tec2_cendrier.png" alt="">
+    <img class="layer" id="fenetreCorrige" src="tec2_fenetre.png" alt="">
+    <img class="layer" id="armoireRangeCorrige" src="tec2_armoire_range.png" alt="">
+    <img class="layer" id="poussiereCorrige" src="tec2_poussiere.png" alt="">
+    <img class="layer" id="lampesCorrige" src="tec2_lampe.png" alt="">
+    <img class="layer" id="armoireFermeeCorrige" src="tec2_armoire_fermee.png" alt="">
     <button class="zone" id="zoneServiette" aria-label="Examiner la serviette"></button>
     <button class="zone" id="zoneVeste" aria-label="Examiner la veste"></button>
-    <button class="zone" id="zoneHabitFond" aria-label="Examiner les habits sur le lit droit"></button>
+    <button class="zone" id="zoneHabitFond" aria-label="Examiner les chaussettes sur le lit droit"></button>
     <button class="zone" id="zoneMusique" aria-label="Examiner la musique"></button>
     <button class="zone" id="zoneBouilloire" aria-label="Examiner la bouilloire"></button>
     <button class="zone" id="zonePoussiere" aria-label="Examiner la poussière sous le radiateur"></button>
@@ -104,7 +103,7 @@ h1{font-size:clamp(20px,3vw,26px);margin:6px 0}
     <button id="centerView" aria-label="Recentrer le regard">◎</button>
   </div>
 </div>
-<div class="timerbar" id="timerbar"><span>⏱️ Temps restant : <strong id="timer">06:00</strong></span><button class="action" id="demarrer">▶ Commencer la mission</button></div>
+<div class="timerbar" id="timerbar"><span>⏱️ Temps restant : <strong id="timer">04:00</strong></span><button class="action" id="demarrer">▶ Commencer la mission</button></div>
 <div class="panel">
   <div class="progression" id="progression">Corrections réalisées : 0 / 14</div>
   <p id="message" aria-live="polite">Clique sur « Commencer la mission » pour lancer le chronomètre.</p>
@@ -135,22 +134,25 @@ const prompts={
  serviette:{question:'Une serviette est suspendue sur une armoire. Que faire ?',good:'La plier et la ranger à sa place',bad1:'La laisser sécher sur la porte',bad2:'La jeter par terre',success:'La serviette est rangée.'},
  veste:{question:'Une veste EPIDE est abandonnée sur une chaise. Que faire ?',good:'La ranger correctement dans son espace prévu',bad1:'La poser au sol',bad2:'La laisser sur la chaise',success:'La veste est rangée.'},
  habitFond:{question:'Des chaussettes sont laissées sur le lit de droite. Que faire ?',good:'Les ranger dans leur emplacement prévu',bad1:'Les déplacer sur l’autre lit',bad2:'Les laisser sur la couverture',success:'Le lit du fond est dégagé.'},
- musique:{question:'La musique est trop forte dans la chambre. Quelle est la bonne réaction ?',good:'Arrêter la musique et éteindre l’enceinte',bad1:'Augmenter encore le volume',bad2:'Fermer la porte pour ne pas déranger',success:'La musique est arrêtée.'},
+ musique:{question:'L’enceinte émet un son gênant dans la chambre. Quelle est la bonne réaction ?',good:'Arrêter la musique et éteindre l’enceinte',bad1:'Augmenter encore le volume',bad2:'Fermer la porte pour ne pas déranger',success:'La musique est arrêtée.'},
  bouilloire:{question:'Une bouilloire électrique est installée dans la chambre. Que faire ?',good:'L’éteindre, la débrancher et la retirer de la chambre selon le règlement',bad1:'La cacher dans l’armoire',bad2:'La laisser branchée pour plus tard',success:'La bouilloire a été retirée.'},
  cendrier:{question:'Un cendrier et une cigarette sont sur le rebord de la fenêtre. Que faire ?',good:'Retirer le cendrier et la cigarette, conformément à l’interdiction de fumer',bad1:'Les laisser sur le rebord',bad2:'Les cacher derrière le rideau',success:'Le cendrier et la cigarette ont été retirés.'},
  fenetre:{question:'La fenêtre est restée grande ouverte. Que faire avant de quitter la chambre ?',good:'La fermer correctement',bad1:'La laisser ouverte en permanence',bad2:'Bloquer son battant avec un objet',success:'La fenêtre est fermée.'},
  armoireRange:{question:'L’armoire de droite est en désordre. Que faire ?',good:'Plier les vêtements et organiser les affaires sur les étagères',bad1:'Tout tasser dans le fond',bad2:'Fermer la porte sans ranger',success:'L’armoire est rangée. Il reste à fermer sa porte.'},
  poussiere:{question:'De la poussière s’accumule sous le radiateur. Que faire ?',good:'Nettoyer soigneusement sous le radiateur',bad1:'La pousser derrière le radiateur',bad2:'La laisser jusqu’au prochain contrôle',success:'Le sol sous le radiateur est propre.'},
- lampes:{question:'Les lampes sont restées allumées inutilement. Que faire ?',good:'Éteindre les deux lampes pour économiser l’énergie',bad1:'Les laisser allumées toute la journée',bad2:'Débrancher les fils en tirant dessus',success:'Les deux lampes sont éteintes.'},
+ lampes:{question:'Les lampes sont restées allumées inutilement. Que faire ?',good:'Éteindre les deux lampes pour économiser l’énergie',bad1:'Les laisser allumées toute la journée',bad2:'Débrancher les fils en tirant dessus',success:'Les lampes sont éteintes.'},
  armoireFermee:{question:'L’armoire est maintenant rangée mais sa porte est ouverte. Que faire ?',good:'Fermer correctement sa porte',bad1:'La laisser ouverte',bad2:'La bloquer avec une chaussure',success:'La porte de l’armoire est fermée.'}
 };
+let audioCtx=null,osc=null,volume=null;
+function startMusique(){try{audioCtx=new (window.AudioContext||window.webkitAudioContext)();osc=audioCtx.createOscillator();volume=audioCtx.createGain();osc.type='sawtooth';osc.frequency.value=110;volume.gain.value=.012;osc.connect(volume).connect(audioCtx.destination);osc.start();}catch(e){}}
+function stopMusique(){try{if(osc){osc.stop();osc.disconnect();osc=null;}if(audioCtx){audioCtx.close();audioCtx=null;}}catch(e){}}
 const DUREE=240;let secondes=DUREE,intervalle=null,etat='attente';
 function afficherTemps(){const mm=String(Math.floor(secondes/60)).padStart(2,'0'),ss=String(secondes%60).padStart(2,'0');$('timer').textContent=mm+':'+ss;$('timerbar').classList.toggle('danger',secondes<=60);}
 function arreterChrono(){if(intervalle!==null){clearInterval(intervalle);intervalle=null;}}
-function victoire(){etat='gagne';arreterChrono();choix.style.display='none';$('finale').style.display='block';$('sceneRecompense').style.display='flex';$('demarrer').disabled=true;message.textContent='Bravo ! Tu as terminé la mission avant la fin du temps !';}
-function defaite(){etat='perdu';arreterChrono();choix.style.display='none';selection=null;$('demarrer').disabled=true;message.textContent='⏰ Temps écoulé ! Mission non réussie. Aucun chiffre révélé. Recommence pour retenter ta chance.';}
+function victoire(){stopMusique();etat='gagne';arreterChrono();choix.style.display='none';$('finale').style.display='block';$('sceneRecompense').style.display='flex';$('demarrer').disabled=true;message.textContent='Bravo ! Tu as terminé la mission avant la fin du temps !';}
+function defaite(){stopMusique();etat='perdu';arreterChrono();choix.style.display='none';selection=null;$('demarrer').disabled=true;message.textContent='⏰ Temps écoulé ! Mission non réussie. Aucun chiffre révélé. Recommence pour retenter ta chance.';}
 function progression(){const total=Object.values(done).filter(Boolean).length;$('progression').textContent=`Corrections réalisées : ${total} / 14`;if(total===14&&etat==='jeu')victoire();}
-$('demarrer').onclick=()=>{if(etat!=='attente')return;etat='jeu';$('demarrer').disabled=true;message.textContent='La mission commence : 4 minutes pour corriger les 14 anomalies !';intervalle=setInterval(()=>{if(etat!=='jeu')return;secondes=Math.max(0,secondes-1);afficherTemps();if(secondes===0)defaite();},1000);};
+$('demarrer').onclick=()=>{if(etat!=='attente')return;etat='jeu';startMusique();$('demarrer').disabled=true;message.textContent='La mission commence : 4 minutes pour corriger les 14 anomalies !';intervalle=setInterval(()=>{if(etat!=='jeu')return;secondes=Math.max(0,secondes-1);afficherTemps();if(secondes===0)defaite();},1000);};
 afficherTemps();
 function examiner(type){
  if(etat!=='jeu'){message.textContent=etat==='attente'?'Clique d’abord sur « Commencer la mission ».':'La partie est terminée. Clique sur « Recommencer ». ';return;}
@@ -182,7 +184,7 @@ function choisirReponse(event){
  const type=selection;
  done[type]=true;
  showOverlay(type,true);
- if(type==='armoireRange')updateArmoireZone();
+ if(type==='armoireRange')updateArmoireZone();if(type==='musique')stopMusique();
  message.textContent=prompts[type].success;
  choix.style.display='none';
  selection=null;
@@ -278,7 +280,7 @@ viewport.addEventListener('wheel',e=>{
  if(e.target.closest('.nav'))return;
  e.preventDefault();setZoom(zoom+(e.deltaY<0?.12:-.12));
 },{passive:false});
-$('recommencer').onclick=()=>{arreterChrono();etat='attente';secondes=DUREE;afficherTemps();$('demarrer').disabled=false;$('finale').style.display='none';$('sceneRecompense').style.display='none';for(const key of Object.keys(done)){done[key]=false;showOverlay(key,false)}selection=null;choix.style.display='none';message.textContent='Clique sur « Commencer la mission » pour lancer le chronomètre.';zoom=1;viewX=0;viewY=0;renderCamera();progression();updateArmoireZone()};
+$('recommencer').onclick=()=>{stopMusique();arreterChrono();etat='attente';secondes=DUREE;afficherTemps();$('demarrer').disabled=false;$('finale').style.display='none';$('sceneRecompense').style.display='none';for(const key of Object.keys(done)){done[key]=false;showOverlay(key,false)}selection=null;choix.style.display='none';message.textContent='Clique sur « Commencer la mission » pour lancer le chronomètre.';zoom=1;viewX=0;viewY=0;renderCamera();progression();updateArmoireZone()};
 renderCamera();progression();updateArmoireZone();
 </script>
 </body>
