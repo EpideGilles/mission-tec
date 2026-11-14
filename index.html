@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mission TEC — Exploration V3.0</title>
+<title>Mission TEC — Exploration V4.0</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#101d2b;color:#fff;font-family:Arial,sans-serif}
@@ -57,25 +57,25 @@ h1{font-size:clamp(20px,3vw,26px);margin:6px 0}
 </head>
 <body>
 <main>
-<h1>🎮 Mission TEC — Exploration de la chambre · V3.0</h1>
+<h1>🎮 Mission TEC — Exploration de la chambre · V4.0</h1>
 <p class="subtitle">Avance, regarde autour de toi et corrige les anomalies dans l'ordre que tu souhaites.</p>
 <div class="viewport" id="viewport">
   <div class="camera" id="camera">
-    <img src="avant_v3.png" alt="Chambre en désordre" id="avant">
-    <img id="litCorrige" src="tec3_lit.png" alt="">
-    <img id="solCorrige" src="tec3_sol.png" alt="">
-    <img id="lisseurCorrige" src="tec3_lisseur.png" alt="">
-    <img class="layer" id="servietteCorrige" src="tec3_serviette.png" alt="">
-    <img class="layer" id="vesteCorrige" src="tec3_veste.png" alt="">
-    <img class="layer" id="habitFondCorrige" src="tec3_chaussettes.png" alt="">
-    <img class="layer" id="enceinteCorrige" src="tec3_enceinte.png" alt="">
-    <img class="layer" id="bouilloireCorrige" src="tec3_bouilloire.png" alt="">
-    <img class="layer" id="cendrierCorrige" src="tec3_cendrier.png" alt="">
-    <img class="layer" id="fenetreCorrige" src="tec3_fenetre.png" alt="">
-    <img class="layer" id="armoireRangeCorrige" src="tec3_armoire_range.png" alt="">
+    <img src="avant_v4.png" alt="Chambre en désordre" id="avant">
+    <img id="litCorrige" src="tec4_lit.png" alt="">
+    <img id="solCorrige" src="tec4_sol.png" alt="">
+    <img id="lisseurCorrige" src="tec4_lisseur.png" alt="">
+    <img class="layer" id="servietteCorrige" src="tec4_serviette.png" alt="">
+    <img class="layer" id="vesteCorrige" src="tec4_veste.png" alt="">
+    <img class="layer" id="habitFondCorrige" src="tec4_chaussettes.png" alt="">
+    <img class="layer" id="enceinteCorrige" src="tec4_enceinte.png" alt="">
+    <img class="layer" id="bouilloireCorrige" src="tec4_bouilloire.png" alt="">
+    <img class="layer" id="cendrierCorrige" src="tec4_cendrier.png" alt="">
+    <img class="layer" id="fenetreCorrige" src="tec4_fenetre.png" alt="">
+    <img class="layer" id="armoireRangeCorrige" src="tec4_armoire_range.png" alt="">
     <img class="layer" id="poussiereCorrige" src="tec3_poussiere.png" alt="">
-    <img class="layer" id="lampesCorrige" src="tec3_lampe.png" alt="">
-    <img class="layer" id="armoireFermeeCorrige" src="tec3_armoire_fermee.png" alt="">
+    <img class="layer" id="lampesCorrige" src="tec4_lampe.png" alt="">
+    <img class="layer" id="armoireFermeeCorrige" src="tec4_armoire_fermee.png" alt="">
     <button class="zone" id="zoneServiette" aria-label="Examiner la serviette"></button>
     <button class="zone" id="zoneVeste" aria-label="Examiner la veste"></button>
     <button class="zone" id="zoneHabitFond" aria-label="Examiner les chaussettes sur le lit droit"></button>
@@ -92,7 +92,7 @@ h1{font-size:clamp(20px,3vw,26px);margin:6px 0}
     <button class="zone" id="zoneLisseur" aria-label="Examiner le lisseur"></button>
   </div>
   <div class="hint">Glisser pour regarder · molette/pincement pour zoomer · flèches disponibles</div>
-  <div id="sceneRecompense" aria-live="polite"><div id="confettis" aria-hidden="true"></div><div class="recompenseTexte">🎉 MISSION RÉUSSIE <strong>3</strong></div></div>
+  <div id="sceneRecompense" aria-live="polite"><div id="confettis" aria-hidden="true"></div><div class="recompenseTexte">🎉 MISSION RÉUSSIE <strong>3</strong><span style="display:block;font-size:clamp(14px,2vw,25px);margin-top:12px;color:#fff">Notez ce chiffre, il vous servira pour la suite !</span></div></div>
   <div class="nav" aria-label="Commandes de navigation">
     <button id="up" aria-label="Avancer et zoomer">↑</button>
     <button id="lookUp" aria-label="Lever les yeux">⇧</button>
