@@ -44,6 +44,17 @@ h1{font-size:clamp(20px,3vw,26px);margin:6px 0}
 .status{font-size:13px;color:#b9d4e5;margin-top:9px}
 @media(max-width:650px){main{padding:6px}.viewport{border-radius:5px}.nav{right:5px;bottom:5px;grid-template-columns:repeat(3,34px);grid-template-rows:repeat(3,34px);gap:3px}.hint{font-size:10px;max-width:calc(100% - 120px);padding:4px 6px}.action{display:block;width:100%;margin:6px 0}}
 @media(prefers-reduced-motion:reduce){.camera{transition:none}}
+
+/* Victoire : surimpression sur la chambre, sans modifier les calques */
+.victory-overlay{position:absolute;inset:0;z-index:15;display:none;align-items:center;justify-content:center;flex-direction:column;background:rgba(6,15,29,.35);pointer-events:none;overflow:hidden;text-align:center}
+.victory-overlay.active{display:flex}
+.victory-overlay .win-heading{font-size:clamp(18px,3.2vw,42px);font-weight:900;text-shadow:0 3px 12px #000;margin:0 0 8px}
+.victory-overlay .win-digit{font-size:clamp(110px,23vw,290px);font-weight:900;color:#ffdc63;line-height:1;text-shadow:0 0 18px #ffb72c,0 8px 18px #000;animation:win-pop .7s cubic-bezier(.2,1.4,.4,1) both}
+.victory-overlay .win-caption{font-size:clamp(12px,1.8vw,23px);font-weight:bold;text-shadow:0 2px 8px #000}
+.confetti{position:absolute;top:-12%;width:9px;height:16px;opacity:0;animation:confetti-fall var(--duration) linear var(--delay) infinite;transform:rotate(var(--rotate));background:var(--color);left:var(--left)}
+@keyframes win-pop{from{opacity:0;transform:scale(.3) rotate(-12deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+@keyframes confetti-fall{0%{transform:translate3d(0,-20px,0) rotate(0deg);opacity:1}100%{transform:translate3d(var(--drift),115vh,0) rotate(800deg);opacity:1}}
+@media(prefers-reduced-motion:reduce){.confetti{animation:none;display:none}.victory-overlay .win-digit{animation:none}}
 </style>
 </head>
 <body>
@@ -78,6 +89,12 @@ h1{font-size:clamp(20px,3vw,26px);margin:6px 0}
     <button class="zone" id="zoneSol" aria-label="Examiner les vêtements au sol"></button>
     <button class="zone" id="zoneLisseur" aria-label="Examiner le lisseur"></button>
   </div>
+  <div class="victory-overlay" id="victoryOverlay" aria-live="assertive" role="status">
+    <div class="win-heading">🏆 MISSION RÉUSSIE !</div>
+    <div class="win-digit">3</div>
+    <div class="win-caption">Note ce chiffre pour le coffre final !</div>
+    <div id="confettiContainer" aria-hidden="true"></div>
+  </div>
   <div class="hint">Glisser pour regarder · molette/pincement pour zoomer · flèches disponibles</div>
   <div class="nav" aria-label="Commandes de navigation">
     <button id="up" aria-label="Avancer et zoomer">↑</button>
@@ -100,7 +117,7 @@ h1{font-size:clamp(20px,3vw,26px);margin:6px 0}
   </div>
   <button class="action secondary" id="retour">⌂ Retour à l'entrée</button>
   <button class="action secondary" id="recommencer">↻ Recommencer la partie</button>
-  <div class="finale" id="finale" aria-live="assertive"><h2>🏆 Mission réussie !</h2><p>Voici ton chiffre à noter pour le coffre final :</p><div class="chiffre">3</div><p>Conserve-le pour la suite de l’escape game.</p></div>
+  
   <div class="status" id="cameraStatus" aria-live="polite">Vue : centre · Zoom : 100 %</div>
 </div>
 </main>
@@ -130,7 +147,9 @@ const prompts={
 const DUREE=360;let secondes=DUREE,intervalle=null,etat='attente';
 function afficherTemps(){const mm=String(Math.floor(secondes/60)).padStart(2,'0'),ss=String(secondes%60).padStart(2,'0');$('timer').textContent=mm+':'+ss;$('timerbar').classList.toggle('danger',secondes<=60);}
 function arreterChrono(){if(intervalle!==null){clearInterval(intervalle);intervalle=null;}}
-function victoire(){etat='gagne';arreterChrono();choix.style.display='none';$('finale').style.display='block';$('demarrer').disabled=true;message.textContent='Bravo ! Tu as terminé la mission avant la fin du temps !';}
+// Confettis décoratifs, créés une seule fois ; aucune dépendance à une image.
+(function creerConfettis(){const c=$('confettiContainer');const couleurs=['#ffe36b','#f76280','#69d9fa','#8bf2a6','#b8a0ff','#ffffff'];for(let i=0;i<85;i++){const p=document.createElement('span');p.className='confetti';p.style.setProperty('--left',((i*37.7)%100)+'%');p.style.setProperty('--delay',(-((i*11)%45)/10)+'s');p.style.setProperty('--duration',(3+(i%9)*.29)+'s');p.style.setProperty('--drift',(((i*23)%160)-80)+'px');p.style.setProperty('--rotate',((i*47)%360)+'deg');p.style.setProperty('--color',couleurs[i%couleurs.length]);c.appendChild(p);}})();
+function victoire(){etat='gagne';arreterChrono();choix.style.display='none';$('victoryOverlay').classList.add('active');$('demarrer').disabled=true;message.textContent='Bravo ! Tu as terminé la mission avant la fin du temps !';}
 function defaite(){etat='perdu';arreterChrono();choix.style.display='none';selection=null;$('demarrer').disabled=true;message.textContent='⏰ Temps écoulé ! Mission non réussie. Aucun chiffre révélé. Recommence pour retenter ta chance.';}
 function progression(){const total=Object.values(done).filter(Boolean).length;$('progression').textContent=`Corrections réalisées : ${total} / 12`;if(total===12&&etat==='jeu')victoire();}
 $('demarrer').onclick=()=>{if(etat!=='attente')return;etat='jeu';$('demarrer').disabled=true;message.textContent='La mission commence : 6 minutes pour corriger les 12 anomalies !';intervalle=setInterval(()=>{if(etat!=='jeu')return;secondes=Math.max(0,secondes-1);afficherTemps();if(secondes===0)defaite();},1000);};
@@ -262,7 +281,7 @@ viewport.addEventListener('wheel',e=>{
  if(e.target.closest('.nav'))return;
  e.preventDefault();setZoom(zoom+(e.deltaY<0?.12:-.12));
 },{passive:false});
-$('recommencer').onclick=()=>{arreterChrono();etat='attente';secondes=DUREE;afficherTemps();$('demarrer').disabled=false;$('finale').style.display='none';for(const key of Object.keys(done)){done[key]=false;showOverlay(key,false)}selection=null;choix.style.display='none';message.textContent='Clique sur « Commencer la mission » pour lancer le chronomètre.';zoom=1;viewX=0;viewY=0;renderCamera();progression();updateArmoireZone()};
+$('recommencer').onclick=()=>{arreterChrono();etat='attente';secondes=DUREE;afficherTemps();$('demarrer').disabled=false;$('victoryOverlay').classList.remove('active');for(const key of Object.keys(done)){done[key]=false;showOverlay(key,false)}selection=null;choix.style.display='none';message.textContent='Clique sur « Commencer la mission » pour lancer le chronomètre.';zoom=1;viewX=0;viewY=0;renderCamera();progression();updateArmoireZone()};
 renderCamera();progression();updateArmoireZone();
 </script>
 </body>
