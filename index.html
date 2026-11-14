@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mission TEC — Exploration V1.6</title>
+<title>Mission TEC — Exploration V1.6 — défi 6 minutes</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#101d2b;color:#fff;font-family:Arial,sans-serif}
@@ -35,7 +35,7 @@ h1{font-size:clamp(20px,3vw,26px);margin:6px 0}
 .nav button:disabled{opacity:.35;cursor:default}
 #up{grid-column:2;grid-row:1}#left{grid-column:1;grid-row:2}#down{grid-column:2;grid-row:3}#right{grid-column:3;grid-row:2}#lookUp{grid-column:1;grid-row:1}#lookDown{grid-column:3;grid-row:3}#centerView{grid-column:2;grid-row:2;font-size:15px}
 .hint{position:absolute;left:10px;bottom:10px;z-index:4;background:#0b2139d9;border-radius:8px;padding:7px 10px;font-size:12px;max-width:calc(100% - 165px)}
-.panel{margin-top:12px;padding:15px;background:#20374b;border-radius:10px}
+.timerbar{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#172d40;border-radius:10px;padding:12px 15px;margin:10px 0}.timerbar strong{font-size:28px;font-variant-numeric:tabular-nums}.timerbar.danger strong{color:#ff8b78}.timerbar .action{margin:0}.finale{display:none;text-align:center;padding:22px;border:2px solid #8fe3c9;border-radius:12px;margin-top:12px}.finale .chiffre{font-size:clamp(76px,14vw,160px);font-weight:900;color:#ffe184;line-height:1.1}.panel{margin-top:12px;padding:15px;background:#20374b;border-radius:10px}
 .progression{font-weight:bold;color:#8fe3c9}
 #message{line-height:1.5}
 .action{background:#425d73;color:white;border:0;border-radius:8px;padding:11px 14px;margin:4px;cursor:pointer;font-weight:bold}
@@ -48,7 +48,7 @@ h1{font-size:clamp(20px,3vw,26px);margin:6px 0}
 </head>
 <body>
 <main>
-<h1>🎮 Mission TEC — Exploration de la chambre · V1.6</h1>
+<h1>🎮 Mission TEC — Exploration de la chambre · V1.6 — défi 6 minutes</h1>
 <p class="subtitle">Avance, regarde autour de toi et corrige les anomalies dans l'ordre que tu souhaites.</p>
 <div class="viewport" id="viewport">
   <div class="camera" id="camera">
@@ -89,9 +89,10 @@ h1{font-size:clamp(20px,3vw,26px);margin:6px 0}
     <button id="centerView" aria-label="Recentrer le regard">◎</button>
   </div>
 </div>
+<div class="timerbar" id="timerbar"><span>⏱️ Temps restant : <strong id="timer">06:00</strong></span><button class="action" id="demarrer">▶ Commencer la mission</button></div>
 <div class="panel">
   <div class="progression" id="progression">Corrections réalisées : 0 / 12</div>
-  <p id="message" aria-live="polite">Observe la chambre et clique sur une anomalie.</p>
+  <p id="message" aria-live="polite">Clique sur « Commencer la mission » pour lancer le chronomètre.</p>
   <div id="choix">
     <button class="action" id="correct"></button>
     <button class="action secondary" id="incorrect1"></button>
@@ -99,6 +100,7 @@ h1{font-size:clamp(20px,3vw,26px);margin:6px 0}
   </div>
   <button class="action secondary" id="retour">⌂ Retour à l'entrée</button>
   <button class="action secondary" id="recommencer">↻ Recommencer la partie</button>
+  <div class="finale" id="finale" aria-live="assertive"><h2>🏆 Mission réussie !</h2><p>Voici ton chiffre à noter pour le coffre final :</p><div class="chiffre">3</div><p>Conserve-le pour la suite de l’escape game.</p></div>
   <div class="status" id="cameraStatus" aria-live="polite">Vue : centre · Zoom : 100 %</div>
 </div>
 </main>
@@ -125,10 +127,19 @@ const prompts={
  armoireRange:{question:'L’armoire de droite est en désordre. Que faire ?',good:'Plier les vêtements et organiser les affaires sur les étagères',bad1:'Tout tasser dans le fond',bad2:'Fermer la porte sans ranger',success:'L’armoire est rangée. Il reste à fermer sa porte.'},
  armoireFermee:{question:'L’armoire est maintenant rangée mais sa porte est ouverte. Que faire ?',good:'Fermer correctement sa porte',bad1:'La laisser ouverte',bad2:'La bloquer avec une chaussure',success:'La porte de l’armoire est fermée.'}
 };
-function progression(){const total=Object.values(done).filter(Boolean).length;$('progression').textContent=`Corrections réalisées : ${total} / 12`;if(total===12)message.textContent="Bravo ! Tu as corrigé toutes les anomalies de la chambre !"}
+const DUREE=360;let secondes=DUREE,intervalle=null,etat='attente';
+function afficherTemps(){const mm=String(Math.floor(secondes/60)).padStart(2,'0'),ss=String(secondes%60).padStart(2,'0');$('timer').textContent=mm+':'+ss;$('timerbar').classList.toggle('danger',secondes<=60);}
+function arreterChrono(){if(intervalle!==null){clearInterval(intervalle);intervalle=null;}}
+function victoire(){etat='gagne';arreterChrono();choix.style.display='none';$('finale').style.display='block';$('demarrer').disabled=true;message.textContent='Bravo ! Tu as terminé la mission avant la fin du temps !';}
+function defaite(){etat='perdu';arreterChrono();choix.style.display='none';selection=null;$('demarrer').disabled=true;message.textContent='⏰ Temps écoulé ! Mission non réussie. Aucun chiffre révélé. Recommence pour retenter ta chance.';}
+function progression(){const total=Object.values(done).filter(Boolean).length;$('progression').textContent=`Corrections réalisées : ${total} / 12`;if(total===12&&etat==='jeu')victoire();}
+$('demarrer').onclick=()=>{if(etat!=='attente')return;etat='jeu';$('demarrer').disabled=true;message.textContent='La mission commence : 6 minutes pour corriger les 12 anomalies !';intervalle=setInterval(()=>{if(etat!=='jeu')return;secondes=Math.max(0,secondes-1);afficherTemps();if(secondes===0)defaite();},1000);};
+afficherTemps();
 function examiner(type){
+ if(etat!=='jeu'){message.textContent=etat==='attente'?'Clique d’abord sur « Commencer la mission ».':'La partie est terminée. Clique sur « Recommencer ». ';return;}
  if(done[type])return;
  if(type==='armoireFermee'&&!done.armoireRange)return;
+ if(type==='fenetre'&&!done.cendrier){message.textContent='⚠️ Impossible de fermer la fenêtre : un objet empêche cette manipulation';choix.style.display='none';selection=null;return;}
  selection=type;
  const p=prompts[type];
  message.textContent=p.question;
@@ -145,7 +156,7 @@ function examiner(type){
 for(const [zone,type] of Object.entries({zoneLit:'lit',zoneSol:'sol',zoneLisseur:'lisseur',zoneServiette:'serviette',zoneVeste:'veste',zoneHabitFond:'habitFond',zoneMusique:'musique',zoneBouilloire:'bouilloire',zoneCendrier:'cendrier',zoneFenetre:'fenetre'}))$(zone).onclick=()=>examiner(type);
 $('zoneArmoire').onclick=()=>examiner(done.armoireRange?'armoireFermee':'armoireRange');
 function choisirReponse(event){
- if(!selection)return;
+ if(!selection||etat!=='jeu')return;
  const button=event.currentTarget;
  if(button.dataset.valid!=='true'){
   message.textContent="Ce n'est pas la bonne solution. Réfléchis aux règles d'hygiène, de rangement et de sécurité.";
@@ -155,6 +166,7 @@ function choisirReponse(event){
  done[type]=true;
  showOverlay(type,true);
  if(type==='armoireRange')updateArmoireZone();
+ if(type==='armoireFermee')showOverlay('armoireRange',false);
  message.textContent=prompts[type].success;
  choix.style.display='none';
  selection=null;
@@ -250,7 +262,7 @@ viewport.addEventListener('wheel',e=>{
  if(e.target.closest('.nav'))return;
  e.preventDefault();setZoom(zoom+(e.deltaY<0?.12:-.12));
 },{passive:false});
-$('recommencer').onclick=()=>{for(const key of Object.keys(done)){done[key]=false;showOverlay(key,false)}selection=null;choix.style.display='none';message.textContent='Observe la chambre et clique sur une anomalie.';zoom=1;viewX=0;viewY=0;renderCamera();progression();updateArmoireZone()};
+$('recommencer').onclick=()=>{arreterChrono();etat='attente';secondes=DUREE;afficherTemps();$('demarrer').disabled=false;$('finale').style.display='none';for(const key of Object.keys(done)){done[key]=false;showOverlay(key,false)}selection=null;choix.style.display='none';message.textContent='Clique sur « Commencer la mission » pour lancer le chronomètre.';zoom=1;viewX=0;viewY=0;renderCamera();progression();updateArmoireZone()};
 renderCamera();progression();updateArmoireZone();
 </script>
 </body>
